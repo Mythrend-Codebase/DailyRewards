@@ -14,6 +14,7 @@ import eu.athelion.dailyrewards.util.PermissionUtil;
 import eu.athelion.dailyrewards.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -33,6 +34,7 @@ public class MenuManager implements Listener {
 
     private final InventoryHolder MAIN_MENU_HOLDER = new RewardsInventoryHolder();
     private final InventoryHolder SETTINGS_MENU_HOLDER = new RewardSettingsInventoryHolder();
+    private final int[] FILLER_SLOTS = {9,18,27,36,17,26,35,44};
 
     public MenuManager() {
         DailyRewardsPlugin.get().registerListeners(this);
@@ -48,8 +50,11 @@ public class MenuManager implements Listener {
                     TextUtil.applyPlaceholdersToString(player, Lang.MENU_TITLE.asColoredString(player)));
 
             if (Config.FILL_BACKGROUND_ENABLED.asBoolean()) {
-                for (int i = 0; i < Config.MENU_SIZE.asInt(); i++)
+                for (int i = 0; i < 8; i++)
                     inventory.setItem(i, backgroundItem);
+                for (int i = 45; i < 53; i++)
+                    inventory.setItem(i, backgroundItem);
+                for (int fillerSlot : FILLER_SLOTS) inventory.setItem(fillerSlot, backgroundItem);
             }
 
             final User user = UserHandler.getUser(player.getUniqueId());
@@ -128,8 +133,11 @@ public class MenuManager implements Listener {
                 Lang.SETTINGS_TITLE.asColoredString(player));
 
         if (Config.FILL_BACKGROUND_ENABLED.asBoolean()) {
-            for (int i = 0; i < Config.SETTINGS_MENU_SIZE.asInt(); i++)
+            for (int i = 0; i < 8; i++)
                 settings.setItem(i, backgroundItem);
+            for (int i = 45; i < 53; i++)
+                settings.setItem(i, backgroundItem);
+            for (int fillerSlot : FILLER_SLOTS) settings.setItem(fillerSlot, backgroundItem);
         }
 
         final User user = UserHandler.getUser(player.getUniqueId());
@@ -198,6 +206,7 @@ public class MenuManager implements Listener {
         } else if (Config.MONTHLY_POSITIONS.asIntegerList().contains(slot)) {
             new ClaimAction(player).preCheck(player, RewardType.MONTHLY);
         } else if (slot == Config.SETTINGS_POSITION.asInt()) {
+            player.playSound(player.getLocation(), Sound.BLOCK_LEVER_CLICK, 0.5f, 1.0f);
             DailyRewardsPlugin.getMenuManager().openSettings(player);
         }
     }
@@ -227,6 +236,7 @@ public class MenuManager implements Listener {
 
             user.toggleSetting(Setting.JOIN_NOTIFICATION, !user.hasSettingEnabled(Setting.JOIN_NOTIFICATION));
 
+            player.playSound(player.getLocation(), Sound.BLOCK_LEVER_CLICK, 0.5f, 1.0f);
             DailyRewardsPlugin.getMenuManager().openSettings(user.getPlayer());
         } else if (slot == Config.AUTO_CLAIM_REWARDS_POSITION.asInt()) {
             if (!PermissionUtil.hasPermission(player, PermissionUtil.Permission.AUTO_CLAIM_SETTING)) {
@@ -236,8 +246,10 @@ public class MenuManager implements Listener {
 
             user.toggleSetting(Setting.AUTO_CLAIM, !user.hasSettingEnabled(Setting.AUTO_CLAIM));
 
+            player.playSound(player.getLocation(), Sound.BLOCK_LEVER_CLICK, 0.5f, 1.0f);
             DailyRewardsPlugin.getMenuManager().openSettings(user.getPlayer());
         } else if (slot == Config.SETTINGS_POSITION.asInt()) {
+            player.playSound(player.getLocation(), Sound.BLOCK_LEVER_CLICK, 0.5f, 1.0f);
             DailyRewardsPlugin.getMenuManager().openRewardsMenu(user.getPlayer());
         }
     }
