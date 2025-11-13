@@ -133,9 +133,9 @@ public class MenuManager implements Listener {
                 Lang.SETTINGS_TITLE.asColoredString(player));
 
         if (Config.FILL_BACKGROUND_ENABLED.asBoolean()) {
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 9; i++)
                 settings.setItem(i, backgroundItem);
-            for (int i = 45; i < 53; i++)
+            for (int i = 45; i < 54; i++)
                 settings.setItem(i, backgroundItem);
             for (int fillerSlot : FILLER_SLOTS) settings.setItem(fillerSlot, backgroundItem);
         }
