@@ -33,7 +33,7 @@ public class JoinNotificationTask implements Task {
             return;
         }
 
-        if (user.hasSettingEnabled(Setting.AUTO_CLAIM)) {
+        if (user.hasSettingEnabled(Setting.AUTO_CLAIM) && PermissionUtil.hasPermission(user.getPlayer(), PermissionUtil.Permission.AUTO_CLAIM_SETTING)) {
             return;
         }
 
